@@ -3,7 +3,7 @@
 \usepackage{xeCJK}      % 中文支持
 \usepackage{graphicx}   % 图片支持
 \usepackage{geometry}   % 页面布局
-\usepackage{hyperref}   % URL 支持
+\usepackage{titlesec}   % 标题控制
 \usepackage{longtable}  % 长表格支持
 \usepackage{booktabs}   % 表格美化
 \usepackage{listings}   % 代码块支持
@@ -11,6 +11,34 @@
 \usepackage{framed}     % 框架支持
 \usepackage{fancyvrb}   % 代码高亮支持
 \usepackage{fvextra}    % 扩展的代码支持
+\usepackage{bookmark}   % 改进的书签支持
+
+% hyperref 包需要放在大多数包的后面
+\usepackage{hyperref}   % URL 支持
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    bookmarksnumbered=false,     % 书签中不显示编号
+    bookmarksopen=true,          % 展开书签
+    pdfstartview=FitH            % PDF 打开时适应页面宽度
+}
+
+% 关闭章节编号
+\setcounter{secnumdepth}{-2}
+
+% 重新定义章节格式，保持超链接
+\titleformat{\section}
+  {\normalfont\Large\bfseries}   % 格式
+  {}                             % 标签
+  {0pt}                          % 分隔符
+  {\phantomsection}              % 前置代码：添加 PDF 标签
+
+% 设置新章节另起一页，同时确保正确的页码引用
+\newcommand{\sectionbreak}{%
+  \clearpage
+  \phantomsection  % 为下一个章节创建超链接标记点
+}
 
 % 定义代码高亮颜色
 \definecolor{shadecolor}{RGB}{248,248,248}
@@ -94,13 +122,6 @@
 \setmainfont{Palatino}  % 英文正文
 \setsansfont{Helvetica} % 英文标题
 \setmonofont[AutoFakeBold=4]{Source Code Pro} % 代码字体加粗
-
-% 超链接设置
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue
-}
 
 % 定义基本命令
 \providecommand{\tightlist}{%
