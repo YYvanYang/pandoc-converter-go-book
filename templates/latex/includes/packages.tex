@@ -75,7 +75,19 @@
 }
 
 % 中文字体设置
-\setCJKmainfont{PingFang SC}
+\setCJKmainfont[
+    BoldFont={Noto Sans CJK SC Bold},
+    ItalicFont={Noto Sans CJK SC Light}
+]{Noto Serif CJK SC}  % 中文正文用思源宋体
+
+\setCJKsansfont{Noto Sans CJK SC}  % 中文无衬线用思源黑体
+
+\setCJKmonofont{Noto Sans CJK SC}  % 中文等宽字体
+
+% 英文字体设置
+\setmainfont{Palatino}  % 英文正文
+\setsansfont{Helvetica} % 英文标题
+\setmonofont{Source Code Pro} % 代码字体
 
 % 超链接设置
 \hypersetup{

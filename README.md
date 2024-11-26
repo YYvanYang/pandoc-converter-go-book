@@ -19,6 +19,7 @@
 - Pandoc 2.0+
 - TeX Live 2021+（完整版）
 - Make（可选）
+- 思源字体（Noto CJK 字体）
 
 ## 安装
 
@@ -29,7 +30,33 @@ git clone https://github.com/yourusername/pandoc-converter
 cd pandoc-converter
 ```
 
-2. **创建虚拟环境**
+2. **安装字体**
+
+macOS:
+```bash
+# 安装思源字体
+brew install --cask font-noto-serif-cjk font-noto-sans-cjk
+
+# 安装代码字体
+brew install --cask font-source-code-pro
+```
+
+Ubuntu/Debian:
+```bash
+# 安装思源字体
+sudo apt-get install fonts-noto-cjk fonts-noto-cjk-extra
+
+# 安装代码字体
+sudo apt-get install fonts-source-code-pro
+```
+
+Windows:
+- 下载 [Noto Serif CJK SC](https://github.com/googlefonts/noto-cjk/releases) (思源宋体)
+- 下载 [Noto Sans CJK SC](https://github.com/googlefonts/noto-cjk/releases) (思源黑体)
+- 下载 [Source Code Pro](https://github.com/adobe-fonts/source-code-pro/releases)
+- 双击字体文件安装
+
+3. **创建虚拟环境**
 
 ```bash
 # 创建虚拟环境
@@ -42,13 +69,13 @@ source venv/bin/activate
 .\venv\Scripts\activate
 ```
 
-3. **安装 Python 依赖**
+4. **安装 Python 依赖**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **安装系统依赖**
+5. **安装系统依赖**
 
 Ubuntu/Debian:
 ```bash
@@ -168,19 +195,25 @@ toc:
 
 ## 常见问题解决
 
-### 1. 中文字体问题
+### 1. 字体问题
 
-确保系统已安装所需字体：
+如果遇到字体相关错误，请确保已正确安装所需字体：
 
-Ubuntu/Debian:
+**检查字体是否安装成功**：
 ```bash
-sudo apt-get install fonts-noto-cjk
+# macOS/Linux
+fc-list | grep -i "noto"
+fc-list | grep -i "source code pro"
+
+# Windows
+dir C:\Windows\Fonts | findstr "Noto"
+dir C:\Windows\Fonts | findstr "Source"
 ```
 
-macOS:
-```bash
-brew install --cask font-noto-sans-cjk
-```
+**手动下载安装**：
+- 思源宋体：[Noto Serif CJK SC](https://github.com/googlefonts/noto-cjk/releases)
+- 思源黑体：[Noto Sans CJK SC](https://github.com/googlefonts/noto-cjk/releases)
+- Source Code Pro：[下载地址](https://github.com/adobe-fonts/source-code-pro/releases)
 
 ### 2. PDF 引擎错误
 
