@@ -7,8 +7,13 @@ import argparse
 from pathlib import Path
 from typing import Dict, Optional
 
-from utils.config import Config
+# 获取 scripts 目录的路径
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR))
+
+# 直接从当前目录导入
 from utils.pandoc import PandocConverter
+from utils.config import Config
 
 class DocumentConverter:
     """文档转换器"""

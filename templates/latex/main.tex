@@ -1,9 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 
-% 导入配置文件
-\input{includes/packages}
-\input{includes/fonts}
-\input{includes/layout}
+% 导入包配置
+\input{templates/latex/includes/packages}
 
 % 文档信息
 \title{$title$}
@@ -12,16 +10,10 @@
 
 \begin{document}
 
-% 标题页
+$if(title)$
 \maketitle
-
-% 目录
-$if(toc)$
-\tableofcontents
-\newpage
 $endif$
 
-% 正文
 $body$
 
 \end{document} 

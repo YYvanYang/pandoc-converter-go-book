@@ -1,53 +1,36 @@
-import os
 import yaml
-from typing import Any, Dict
+from typing import Dict, Any
 
 class Config:
-    """配置管理器"""
+    """配置加载器"""
     
     def __init__(self, config_path: str):
         self.config_path = config_path
-        self.config = self._load_config()
-
+        self._config = self._load_config()
+    
     def _load_config(self) -> Dict[str, Any]:
-        """加载配置文件"""
-        if not os.path.exists(self.config_path):
-            raise FileNotFoundError(f"Config file not found: {self.config_path}")
-            
-        with open(self.config_path, 'r', encoding='utf-8') as f:
-            return yaml.safe_load(f)
-
+        """加载 YAML 配置文件"""
+        try:
+            with open(self.config_path, 'r', encoding='utf-8') as f:
+                configs = list(yaml.safe_load_all(f))
+                final_config = {}
+                for config in configs:
+                    if config:
+                        final_config.update(config)
+                return final_config
+        except FileNotFoundError:
+            raise FileNotFoundError(f"配置文件未找到: {self.config_path}")
+        except yaml.YAMLError as e:
+            raise ValueError(f"YAML 格式错误: {str(e)}")
+    
     def get(self, key: str, default: Any = None) -> Any:
         """获取配置值"""
-        keys = key.split('.')
-        value = self.config
-        
-        for k in keys:
-            if isinstance(value, dict) and k in value:
-                value = value[k]
-            else:
-                return default
-                
-        return value
-
-    def get_pandoc_options(self) -> list:
-        """获取 Pandoc 选项"""
-        options = []
-        
-        options.extend(['--pdf-engine', self.get('pdf.engine', 'xelatex')])
-        
-        template = self.get('pdf.template')
-        if template:
-            options.extend(['--template', template])
-        
-        if self.get('toc.enabled', True):
-            options.append('--toc')
-            options.extend(['--toc-depth', str(self.get('toc.depth', 3))])
-        
-        if self.get('processing.number-sections', True):
-            options.append('--number-sections')
-        
-        extra_options = self.get('pdf.options', [])
-        options.extend(extra_options)
-        
-        return options 
+        return self._config.get(key, default)
+    
+    def __getitem__(self, key: str) -> Any:
+        """支持字典式访问"""
+        return self._config[key]
+    
+    def __contains__(self, key: str) -> bool:
+        """支持 in 操作符"""
+        return key in self._config

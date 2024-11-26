@@ -42,4 +42,14 @@ processing:
   clean: true
   standalone: true
   number-sections: true
+
+pandoc:
+  metadata:
+    title: "Go语言圣经"
+    author: "Go语言圣经团队"
+    toc: true
+    lang: zh-CN
+  options:
+    - --toc
+    - --number-sections
 --- 

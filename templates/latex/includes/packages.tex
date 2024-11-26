@@ -1,0 +1,28 @@
+% 基础包
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}      % 中文支持
+\usepackage{graphicx}   % 图片支持
+\usepackage{geometry}   % 页面布局
+\usepackage{hyperref}   % URL 支持
+\usepackage{longtable}  % 长表格支持
+\usepackage{booktabs}   % 表格美化
+
+% 页面设置
+\geometry{
+    a4paper,
+    margin=2.5cm
+}
+
+% 中文字体设置
+\setCJKmainfont{PingFang SC}
+
+% 超链接设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
+% 定义基本命令
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
