@@ -1,8 +1,8 @@
 ---
 # 基础设置
 document:
-  title: "文档标题"
-  author: "作者"
+  title: "Go语言圣经"
+  author: "译者: chai2010, Xargin, CrazySssst, foreversmart"
   date: \today
   lang: zh-CN
 
@@ -17,7 +17,6 @@ pdf:
 
 # 目录设置
 toc:
-  enabled: true
   depth: 3
   title: "目录"
 
@@ -42,14 +41,6 @@ processing:
   clean: true
   standalone: true
   number-sections: true
-
-pandoc:
-  metadata:
-    title: "Go语言圣经"
-    author: "Go语言圣经团队"
-    toc: true
-    lang: zh-CN
-  options:
-    - --toc
-    - --number-sections
+  pdf-engine: xelatex
+  top-level-division: chapter
 --- 
