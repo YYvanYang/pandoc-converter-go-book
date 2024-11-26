@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.pdf
+data/input/*
+!data/input/.gitkeep
+data/output/*
+!data/output/.gitkeep
+.DS_Store
+.env
+venv/
+.idea/ 

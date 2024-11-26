@@ -1,0 +1,27 @@
+\documentclass[a4paper,12pt]{article}
+
+% 导入配置文件
+\input{includes/packages}
+\input{includes/fonts}
+\input{includes/layout}
+
+% 文档信息
+\title{$title$}
+\author{$author$}
+\date{$date$}
+
+\begin{document}
+
+% 标题页
+\maketitle
+
+% 目录
+$if(toc)$
+\tableofcontents
+\newpage
+$endif$
+
+% 正文
+$body$
+
+\end{document} 

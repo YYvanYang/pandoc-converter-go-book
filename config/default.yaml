@@ -1,0 +1,45 @@
+---
+# 基础设置
+document:
+  title: "文档标题"
+  author: "作者"
+  date: \today
+  lang: zh-CN
+
+# PDF 输出设置
+pdf:
+  engine: xelatex
+  template: templates/latex/main.tex
+  options:
+    - --pdf-engine=xelatex
+    - --standalone
+    - --top-level-division=chapter
+
+# 目录设置
+toc:
+  enabled: true
+  depth: 3
+  title: "目录"
+
+# 页面设置
+page:
+  size: a4
+  margins:
+    top: 2.5cm
+    bottom: 2.5cm
+    left: 2.5cm
+    right: 2.5cm
+
+# 字体设置
+fonts:
+  main: SimSun
+  sans: SimHei
+  mono: SimFang
+  size: 12pt
+  
+# 处理设置
+processing:
+  clean: true
+  standalone: true
+  number-sections: true
+--- 
