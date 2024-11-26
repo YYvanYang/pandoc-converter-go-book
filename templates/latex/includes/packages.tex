@@ -6,6 +6,67 @@
 \usepackage{hyperref}   % URL 支持
 \usepackage{longtable}  % 长表格支持
 \usepackage{booktabs}   % 表格美化
+\usepackage{listings}   % 代码块支持
+\usepackage{xcolor}     % 颜色支持
+\usepackage{framed}     % 框架支持
+\usepackage{fancyvrb}   % 代码高亮支持
+\usepackage{fvextra}    % 扩展的代码支持
+
+% 定义代码高亮颜色
+\definecolor{shadecolor}{RGB}{248,248,248}
+\definecolor{comment}{RGB}{128,128,128}
+\definecolor{keyword}{RGB}{0,112,192}
+\definecolor{string}{RGB}{0,136,0}
+\definecolor{identifier}{RGB}{0,0,0}
+\definecolor{number}{RGB}{128,0,128}
+
+% 定义代码高亮环境
+\newenvironment{Shaded}
+    {\begin{snugshade}\small\ttfamily}
+    {\end{snugshade}}
+
+\newenvironment{Highlighting}
+    {\begin{Verbatim}[commandchars=\\\{\},fontsize=\small,breaklines,breakanywhere]}
+    {\end{Verbatim}}
+
+% 定义所有可能的代码高亮 token
+\newcommand{\KeywordTok}[1]{\textcolor{keyword}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor{number}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor{number}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor{number}{#1}}
+\newcommand{\CharTok}[1]{\textcolor{string}{#1}}
+\newcommand{\StringTok}[1]{\textcolor{string}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor{comment}{\textit{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor{identifier}{#1}}
+\newcommand{\AlertTok}[1]{\textcolor{red}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor{identifier}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\ErrorTok}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\RegionTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor{red}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor{comment}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor{comment}{\textit{#1}}}
+\newcommand{\VariableTok}[1]{\textcolor{identifier}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textbf{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor{string}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor{string}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor{string}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor{number}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor{keyword}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor{comment}{\textit{#1}}}
+\newcommand{\SectionTok}[1]{\textbf{#1}}
+
+% 图片设置
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\graphicspath{{./}{./images/}}
 
 % 页面设置
 \geometry{
@@ -26,3 +87,33 @@
 % 定义基本命令
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% 定义 pandoc 相关命令
+\providecommand{\pandocbounded}[1]{#1}
+
+% 代码块设置
+\lstset{
+    breaklines=true,
+    basicstyle=\ttfamily\small,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{keyword},
+    commentstyle=\color{comment},
+    stringstyle=\color{string},
+    showstringspaces=false,
+    backgroundcolor=\color{shadecolor},
+    breakatwhitespace=false,
+    breakindent=0pt,
+    keepspaces=true,
+    columns=flexible,
+    escapeinside={(*@}{@*)}
+}
+
+% 图片错误处理
+\usepackage{silence}
+\WarningFilter{latex}{File}
+\WarningFilter{latex}{Cannot determine size}
+
+% 设置代码块换行
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true}
