@@ -10,6 +10,12 @@ BOOK_DIR = $(INPUT_DIR)/book
 MERGED_HTML = $(INPUT_DIR)/book/merged.html
 DEFAULT_PDF = $(OUTPUT_DIR)/document.pdf
 
+# 获取当前日期 (格式: YYYYMMDD)
+DATE := $(shell date +%Y%m%d)
+
+# 设置输出文件名 (书名+日期)
+OUTPUT_FILE = go语言圣经-$(DATE).pdf
+
 # 默认目标：安装依赖，合并并转换
 all: install merge
 	$(MAKE) convert INPUT=$(MERGED_HTML) OUTPUT=$(DEFAULT_PDF)
@@ -39,7 +45,7 @@ convert:
 	$(PYTHON) scripts/convert.py \
 		--config $(CONFIG) \
 		"$(INPUT)" \
-		"$(OUTPUT)"
+		"data/output/$(OUTPUT_FILE)"
 
 # 清理输出
 clean:

@@ -11,6 +11,7 @@
 - 📝 完整的页眉页脚支持
 - 📑 自动目录生成
 - 🔢 章节自动编号
+- 📅 自动添加生成日期
 
 ## 系统要求
 
@@ -69,32 +70,39 @@ Windows:
 
 ### 基本使用
 
-1. **使用 Makefile**
+1. **合并 HTML 文件并转换为 PDF**
 
 ```bash
-make convert INPUT=data/input/document.html OUTPUT=data/output/document.pdf
+# 使用 make 命令一键转换
+make
+
+# 默认会生成类似 go语言圣经-20240126.pdf 的输出文件
 ```
 
 2. **直接使用 Python 脚本**
 
 ```bash
-python scripts/convert.py data/input/document.html data/output/document.pdf
+# 合并 HTML 文件
+python scripts/merge.py --input data/input/book --output data/input/book/merged.html
+
+# 转换为 PDF
+python scripts/convert.py --config config/default.yaml data/input/book/merged.html data/output/document.pdf
 ```
 
 ### 使用不同配置
 
 ```bash
 # 使用中文配置
-make convert INPUT=doc.html OUTPUT=doc.pdf CONFIG=config/chinese.yaml
+make convert CONFIG=config/chinese.yaml
 
 # 使用英文配置
-make convert INPUT=doc.html OUTPUT=doc.pdf CONFIG=config/english.yaml
+make convert CONFIG=config/english.yaml
 ```
 
 ### 开启详细输出
 
 ```bash
-python scripts/convert.py --verbose input.html output.pdf
+python scripts/convert.py --verbose --config config/default.yaml input.html output.pdf
 ```
 
 ## 配置说明
