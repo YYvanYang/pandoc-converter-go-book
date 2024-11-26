@@ -10,8 +10,7 @@
 - 🔧 可配置的转换选项
 - 📝 完整的页眉页脚支持
 - 📑 自动目录生成
-- 🔢 章节自动编号
-- 📅 自动添加生成日期
+- 🔢 自动添加生成日期
 
 ## 系统要求
 
@@ -19,7 +18,11 @@
 - Pandoc 2.0+
 - TeX Live 2021+（完整版）
 - Make（可选）
-- 思源字体（Noto CJK 字体）
+- 字体要求：
+  - Noto CJK 字体（思源宋体、思源黑体）
+  - Palatino（英文正文）
+  - Helvetica（英文标题）
+  - Source Code Pro（代码字体）
 
 ## 安装
 
@@ -39,6 +42,10 @@ brew install --cask font-noto-serif-cjk font-noto-sans-cjk
 
 # 安装代码字体
 brew install --cask font-source-code-pro
+
+# 安装其他必需字体
+brew install --cask font-palatino
+brew install --cask font-helvetica
 ```
 
 Ubuntu/Debian:
@@ -178,6 +185,19 @@ toc:
 \setCJKmainfont[BoldFont={SimHei}]{SimSun}
 \setmainfont{Times New Roman}
 ```
+
+### LaTeX 排版特性
+
+- 支持自动代码高亮，包含多种编程语言
+- 图片自动缩放至页面宽度的 90%
+- 中英文混排字体智能处理：
+  - 中文正文：思源宋体
+  - 中文标题：思源黑体
+  - 英文正文：Palatino
+  - 英文标题：Helvetica
+  - 代码块：Source Code Pro
+- 支持代码块自动换行
+- 完整的超链接支持（包含目录、交叉引用）
 
 ## 项目结构
 
