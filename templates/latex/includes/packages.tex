@@ -22,7 +22,7 @@
 
 % 定义代码高亮环境
 \newenvironment{Shaded}
-    {\begin{snugshade}\small\ttfamily}
+    {\begin{snugshade}\small\ttfamily\bfseries}
     {\end{snugshade}}
 
 \newenvironment{Highlighting}
@@ -67,6 +67,12 @@
 % 图片设置
 \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
 \graphicspath{{./}{./images/}}
+% 设置图片最大宽度为页面宽度的 90%
+\makeatletter
+\g@addto@macro\@floatboxreset{\linewidth=0.9\textwidth}
+\makeatother
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
 
 % 页面设置
 \geometry{
@@ -82,12 +88,12 @@
 
 \setCJKsansfont{Noto Sans CJK SC}  % 中文无衬线用思源黑体
 
-\setCJKmonofont{Noto Sans CJK SC}  % 中文等宽字体
+\setCJKmonofont[AutoFakeBold=4]{Noto Sans CJK SC}  % 中文等宽字体，添加 AutoFakeBold 使字体加粗
 
 % 英文字体设置
 \setmainfont{Palatino}  % 英文正文
 \setsansfont{Helvetica} % 英文标题
-\setmonofont{Source Code Pro} % 代码字体
+\setmonofont[AutoFakeBold=4]{Source Code Pro} % 代码字体加粗
 
 % 超链接设置
 \hypersetup{
@@ -106,11 +112,11 @@
 % 代码块设置
 \lstset{
     breaklines=true,
-    basicstyle=\ttfamily\small,
+    basicstyle=\ttfamily\small\bfseries,
     frame=single,
     numbers=left,
     numberstyle=\tiny,
-    keywordstyle=\color{keyword},
+    keywordstyle=\color{keyword}\bfseries,
     commentstyle=\color{comment},
     stringstyle=\color{string},
     showstringspaces=false,
