@@ -42,10 +42,6 @@ brew install --cask font-noto-serif-cjk font-noto-sans-cjk
 
 # 安装代码字体
 brew install --cask font-source-code-pro
-
-# 安装其他必需字体
-brew install --cask font-palatino
-brew install --cask font-helvetica
 ```
 
 Ubuntu/Debian:
