@@ -50,7 +50,7 @@
 
 % 定义代码高亮环境
 \newenvironment{Shaded}
-    {\begin{snugshade}\small\ttfamily\bfseries}
+    {\begin{snugshade}\small\ttfamily}
     {\end{snugshade}}
 
 \newenvironment{Highlighting}
@@ -109,19 +109,14 @@
 }
 
 % 中文字体设置
-\setCJKmainfont[
-    BoldFont={Noto Sans CJK SC Bold},
-    ItalicFont={Noto Sans CJK SC Light}
-]{Noto Serif CJK SC}  % 中文正文用思源宋体
-
-\setCJKsansfont{Noto Sans CJK SC}  % 中文无衬线用思源黑体
-
-\setCJKmonofont[AutoFakeBold=4]{Noto Sans CJK SC}  % 中文等宽字体，添加 AutoFakeBold 使字体加粗
+\setCJKmainfont{Songti SC}  % 中文正文
+\setCJKsansfont{PingFang SC}  % 中文标题
+\setCJKmonofont{PingFang SC}  % 中文等宽
 
 % 英文字体设置
-\setmainfont{Palatino}  % 英文正文
-\setsansfont{Helvetica} % 英文标题
-\setmonofont[AutoFakeBold=4]{Source Code Pro} % 代码字体加粗
+\setmainfont{Times New Roman}  % 英文正文
+\setsansfont{Helvetica}  % 英文标题
+\setmonofont{Menlo}  % 代码
 
 % 定义基本命令
 \providecommand{\tightlist}{%
@@ -133,11 +128,11 @@
 % 代码块设置
 \lstset{
     breaklines=true,
-    basicstyle=\ttfamily\small\bfseries,
+    basicstyle=\ttfamily\small,
     frame=single,
     numbers=left,
     numberstyle=\tiny,
-    keywordstyle=\color{keyword}\bfseries,
+    keywordstyle=\color{keyword},
     commentstyle=\color{comment},
     stringstyle=\color{string},
     showstringspaces=false,

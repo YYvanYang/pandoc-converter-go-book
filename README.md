@@ -18,11 +18,14 @@
 - Pandoc 2.0+
 - TeX Live 2021+（完整版）
 - Make（可选）
-- 字体要求：
-  - Noto CJK 字体（思源宋体、思源黑体）
-  - Palatino（英文正文）
-  - Helvetica（英文标题）
-  - Source Code Pro（代码字体）
+- macOS 系统字体要求：
+  - 中文字体：
+    - 宋体-简 (Songti SC) - 正文
+    - 苹方 (PingFang SC) - 标题和等宽字体
+  - 英文字体：
+    - Times New Roman - 正文
+    - Helvetica - 标题
+    - Menlo - 代码
 
 ## 安装
 
@@ -83,18 +86,20 @@ pip install -r requirements.txt
 Ubuntu/Debian:
 ```bash
 sudo apt-get update
-sudo apt-get install pandoc texlive-full
+sudo apt-get install pandoc texlive-full fonts-noto-cjk
 ```
 
 macOS:
 ```bash
 brew install pandoc
 brew install --cask mactex
+# macOS 默认已安装所需字体
 ```
 
 Windows:
 - 下载并安装 [Pandoc](https://pandoc.org/installing.html)
 - 下载并安装 [MiKTeX](https://miktex.org/download)
+- 安装宋体和黑体字体
 
 ## 使用方法
 
@@ -187,11 +192,11 @@ toc:
 - 支持自动代码高亮，包含多种编程语言
 - 图片自动缩放至页面宽度的 90%
 - 中英文混排字体智能处理：
-  - 中文正文：思源宋体
-  - 中文标题：思源黑体
-  - 英文正文：Palatino
+  - 中文正文：宋体-简 (Songti SC)
+  - 中文标题：苹方 (PingFang SC)
+  - 英文正文：Times New Roman
   - 英文标题：Helvetica
-  - 代码块：Source Code Pro
+  - 代码：Menlo
 - 支持代码块自动换行
 - 完整的超链接支持（包含目录、交叉引用）
 
@@ -217,19 +222,22 @@ toc:
 
 **检查字体是否安装成功**：
 ```bash
-# macOS/Linux
+# macOS
+fc-list | grep -i "songti"
+fc-list | grep -i "pingfang"
+
+# Linux
 fc-list | grep -i "noto"
-fc-list | grep -i "source code pro"
 
 # Windows
-dir C:\Windows\Fonts | findstr "Noto"
-dir C:\Windows\Fonts | findstr "Source"
+dir C:\Windows\Fonts | findstr "SimSun"
+dir C:\Windows\Fonts | findstr "SimHei"
 ```
 
-**手动下载安装**：
-- 思源宋体：[Noto Serif CJK SC](https://github.com/googlefonts/noto-cjk/releases)
-- 思源黑体：[Noto Sans CJK SC](https://github.com/googlefonts/noto-cjk/releases)
-- Source Code Pro：[下载地址](https://github.com/adobe-fonts/source-code-pro/releases)
+**手动安装字体**：
+- macOS 默认已安装所需字体
+- Linux 用户安装 Noto CJK 字体
+- Windows 用户确保安装宋体(SimSun)和黑体(SimHei)
 
 ### 2. PDF 引擎错误
 
