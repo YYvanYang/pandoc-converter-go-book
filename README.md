@@ -18,14 +18,22 @@
 - Pandoc 2.0+
 - TeX Live 2021+（完整版）
 - Make（可选）
-- macOS 系统字体要求：
-  - 中文字体：
-    - 宋体-简 (Songti SC) - 正文
-    - 苹方 (PingFang SC) - 标题和等宽字体
+- 字体要求：
+  - 中文字体（按优先级排序）：
+    - 正文字体：
+      - 思源宋体 (Noto Serif CJK SC)
+      - 宋体-简 (Songti SC) [仅 macOS]
+      - 方正书宋 (FZShuSong)
+      - 中易宋体 (SimSun) [仅 Windows]
+    - 标题字体：
+      - 思源黑体 (Noto Sans CJK SC)
+      - 苹方-简 (PingFang SC) [仅 macOS]
+      - 方正黑体 (FZHei)
+      - 中易黑体 (SimHei) [仅 Windows]
   - 英文字体：
     - Times New Roman - 正文
-    - Helvetica - 标题
-    - Menlo - 代码
+    - Helvetica/Arial - 标题
+    - Source Code Pro/Menlo/Consolas - 代码
 
 ## 安装
 
@@ -218,26 +226,39 @@ toc:
 
 ### 1. 字体问题
 
-如果遇到字体相关错误，请确保已正确安装所需字体：
+如果遇到字体相关错误，建议按以下优先级安装和使用字体：
+
+1. **推荐字体组合**：
+   - 正文：思源宋体 (Noto Serif CJK SC)
+   - 标题：思源黑体 (Noto Sans CJK SC)
+   - 代码：Source Code Pro
+
+2. **macOS 用户推荐**：
+   - 正文：宋体-简 (Songti SC)
+   - 标题：苹方-简 (PingFang SC)
+   - 代码：Menlo
+
+3. **Windows 用户推荐**：
+   - 正文：中易宋体 (SimSun) 或思源宋体
+   - 标题：中易黑体 (SimHei) 或思源黑体
+   - 代码：Consolas 或 Source Code Pro
 
 **检查字体是否安装成功**：
 ```bash
 # macOS
 fc-list | grep -i "songti"
 fc-list | grep -i "pingfang"
+fc-list | grep -i "source"
 
 # Linux
 fc-list | grep -i "noto"
+fc-list | grep -i "source"
 
 # Windows
-dir C:\Windows\Fonts | findstr "SimSun"
-dir C:\Windows\Fonts | findstr "SimHei"
+fc-list | grep -i "simsun"
+fc-list | grep -i "simhei"
+fc-list | grep -i "source"
 ```
-
-**手动安装字体**：
-- macOS 默认已安装所需字体
-- Linux 用户安装 Noto CJK 字体
-- Windows 用户确保安装宋体(SimSun)和黑体(SimHei)
 
 ### 2. PDF 引擎错误
 
