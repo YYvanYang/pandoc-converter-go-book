@@ -3,7 +3,7 @@
 \usepackage{xeCJK}      % 中文支持
 \usepackage{graphicx}   % 图片支持
 \usepackage{geometry}   % 页面布局
-\usepackage{titlesec}   % 标题控制
+\usepackage{hyperref}   % URL 支持
 \usepackage{longtable}  % 长表格支持
 \usepackage{booktabs}   % 表格美化
 \usepackage{listings}   % 代码块支持
@@ -11,34 +11,6 @@
 \usepackage{framed}     % 框架支持
 \usepackage{fancyvrb}   % 代码高亮支持
 \usepackage{fvextra}    % 扩展的代码支持
-\usepackage{bookmark}   % 改进的书签支持
-
-% hyperref 包需要放在大多数包的后面
-\usepackage{hyperref}   % URL 支持
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue,
-    bookmarksnumbered=false,     % 书签中不显示编号
-    bookmarksopen=true,          % 展开书签
-    pdfstartview=FitH            % PDF 打开时适应页面宽度
-}
-
-% 关闭章节编号
-\setcounter{secnumdepth}{-2}
-
-% 重新定义章节格式，保持超链接
-\titleformat{\section}
-  {\normalfont\Large\bfseries}   % 格式
-  {}                             % 标签
-  {0pt}                          % 分隔符
-  {\phantomsection}              % 前置代码：添加 PDF 标签
-
-% 设置新章节另起一页，同时确保正确的页码引用
-\newcommand{\sectionbreak}{%
-  \clearpage
-  \phantomsection  % 为下一个章节创建超链接标记点
-}
 
 % 定义代码高亮颜色
 \definecolor{shadecolor}{RGB}{248,248,248}
@@ -54,7 +26,7 @@
     {\end{snugshade}}
 
 \newenvironment{Highlighting}
-    {\begin{Verbatim}[commandchars=\\\{\},fontsize=\small,breaklines,breakanywhere]}
+    {\begin{Verbatim}[commandchars=\\\{\},fontsize=\small,breaklines=true,breakanywhere=true]}
     {\end{Verbatim}}
 
 % 定义所有可能的代码高亮 token
@@ -95,12 +67,6 @@
 % 图片设置
 \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
 \graphicspath{{./}{./images/}}
-% 设置图片最大宽度为页面宽度的 90%
-\makeatletter
-\g@addto@macro\@floatboxreset{\linewidth=0.9\textwidth}
-\makeatother
-\let\oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
 
 % 页面设置
 \geometry{
@@ -109,14 +75,14 @@
 }
 
 % 中文字体设置
-\setCJKmainfont{Songti SC}  % 中文正文
-\setCJKsansfont{PingFang SC}  % 中文标题
-\setCJKmonofont{PingFang SC}  % 中文等宽
+\setCJKmainfont{PingFang SC}
 
-% 英文字体设置
-\setmainfont{Times New Roman}  % 英文正文
-\setsansfont{Helvetica}  % 英文标题
-\setmonofont{Menlo}  % 代码
+% 超链接设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
 
 % 定义基本命令
 \providecommand{\tightlist}{%
