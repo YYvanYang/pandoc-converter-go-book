@@ -91,6 +91,12 @@
 % 图片设置
 \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
 \graphicspath{{./}{./images/}}
+% 设置图片最大宽度为页面宽度的 90%
+\makeatletter
+\g@addto@macro\@floatboxreset{\linewidth=0.9\textwidth}
+\makeatother
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
 
 % 页面设置
 \geometry{
