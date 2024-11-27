@@ -37,7 +37,7 @@ class PandocConverter:
                 '-V', 'documentclass=article',
                 '-V', 'CJKmainfont=PingFang SC',
                 '-V', 'geometry=margin=2.5cm',
-                '-V', f'title=Go语言圣经',
+                '-V', 'title=Rust语言圣经',
                 '-o', output_path,
                 input_path
             ]

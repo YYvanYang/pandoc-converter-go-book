@@ -141,7 +141,7 @@ def merge_html_files(input_dir: str, output_file: str):
     <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <title>Go语言圣经</title>
+        <title>Rust语言圣经</title>
         <style>
             body { max-width: 800px; margin: 0 auto; padding: 20px; }
             img { max-width: 100%; height: auto; }

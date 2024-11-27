@@ -1,8 +1,8 @@
 ---
 # 基础设置
 document:
-  title: "Go语言圣经"
-  author: "译者: chai2010, Xargin, CrazySssst, foreversmart"
+  title: "Rust 语言圣经"
+  author: "Steve Klabnik and Carol Nichols"
   date: \today
   lang: zh-CN
 
