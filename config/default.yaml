@@ -1,10 +1,19 @@
 ---
-# 基础设置
-document:
+# 文档元数据
+metadata:
   title: "Go语言圣经"
-  author: "译者: chai2010, Xargin, CrazySssst, foreversmart"
-  date: \today
-  lang: zh-CN
+  authors:
+    - "chai2010"
+    - "Xargin" 
+    - "CrazySssst"
+    - "foreversmart"
+  author_prefix: "译者:"
+  language: "zh-CN"
+  rights: "CC BY-NC-SA 4.0"
+  keywords: "Go,Golang,编程"
+  subject: "Go语言编程指南"
+  creator: "LaTeX with hyperref"
+  producer: "xelatex"
 
 # PDF 输出设置
 pdf:

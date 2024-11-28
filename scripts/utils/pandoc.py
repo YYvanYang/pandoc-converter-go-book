@@ -25,6 +25,12 @@ class PandocConverter:
             output_dir = Path(output_path).parent
             output_dir.mkdir(parents=True, exist_ok=True)
             
+            # 从配置获取元数据
+            authors = self.config.get("metadata", {}).get("authors", [])
+            author_prefix = self.config.get("metadata", {}).get("author_prefix", "译者:")
+            author_text = f"{author_prefix} {', '.join(authors)}"
+            metadata = self.config.get("metadata", {})
+            
             # Pandoc 命令
             cmd = [
                 'pandoc',
@@ -32,20 +38,20 @@ class PandocConverter:
                 '-f', 'html',
                 '-t', 'pdf',
                 '--template', str(template_path),
-                '--extract-media', str(output_dir),  # 提取媒体文件到输出目录
-                '--wrap=none',                       # 禁用文本换行
+                '--extract-media', str(output_dir),
+                '--wrap=none',
                 '-V', 'documentclass=article',
                 '-V', 'CJKmainfont=PingFang SC',
                 '-V', 'geometry=margin=2.5cm',
-                '-V', f'title=Go语言圣经',
-                '-V', f'author=译者: chai2010, Xargin, CrazySssst, foreversmart',
+                '-V', f'title={metadata.get("title", "")}',
+                '-V', f'author={author_text}',
                 '--pdf-engine-opt=-shell-escape',
-                '--metadata', 'title=Go语言圣经',
-                '--metadata', 'author=译者: chai2010, Xargin, CrazySssst, foreversmart',
-                '--metadata', 'creator=LaTeX with hyperref',
-                '--metadata', 'producer=xelatex',
-                '--metadata', 'keywords=Go,Golang,编程',
-                '--metadata', 'subject=Go语言编程指南',
+                '--metadata', f'title={metadata.get("title", "")}',
+                '--metadata', f'author={author_text}',
+                '--metadata', f'creator={metadata.get("creator", "")}',
+                '--metadata', f'producer={metadata.get("producer", "")}',
+                '--metadata', f'keywords={metadata.get("keywords", "")}',
+                '--metadata', f'subject={metadata.get("subject", "")}',
                 '-o', output_path,
                 input_path
             ]
