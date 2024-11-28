@@ -4,7 +4,7 @@
 \input{templates/latex/includes/packages}
 
 % 文档信息
-\title{$title$}
+\title{\Large{$title$}}
 \author{$author$}
 \date{$date$}
 
@@ -12,6 +12,7 @@
 
 $if(title)$
 \maketitle
+\thispagestyle{empty}  % 移除首页页码
 $endif$
 
 $body$

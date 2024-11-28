@@ -38,6 +38,7 @@ class PandocConverter:
                 '-V', 'CJKmainfont=PingFang SC',
                 '-V', 'geometry=margin=2.5cm',
                 '-V', f'title=Go语言圣经',
+                '-V', f'author=译者: chai2010, Xargin, CrazySssst, foreversmart',
                 '-o', output_path,
                 input_path
             ]
