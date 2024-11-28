@@ -6,6 +6,7 @@ import argparse
 from bs4 import BeautifulSoup
 from urllib.parse import unquote, urlparse
 import hashlib
+from utils.config import Config
 
 def sanitize_filename(filename: str) -> str:
     """清理文件名，移除特殊字符"""
@@ -71,6 +72,47 @@ def merge_html_files(input_dir: str, output_file: str):
     input_path = Path(input_dir)
     output_path = Path(output_file)
     
+    # 使用 Config 类加载配置
+    config = Config("config/default.yaml")
+    
+    # 从配置获取元数据
+    metadata = config.get("metadata", {})
+    authors = metadata.get("authors", [])
+    author_prefix = metadata.get("author_prefix", "译者:")
+    author_text = f"{author_prefix} {', '.join(authors)}"
+    
+    # 定义 CSS 样式
+    css_styles = """
+        body { max-width: 800px; margin: 0 auto; padding: 20px; }
+        img { max-width: 100%; height: auto; }
+        pre { white-space: pre-wrap; }
+        code { background: #f5f5f5; padding: 2px 5px; }
+    """
+    
+    # 创建新的文档结构
+    html_template = f"""
+    <!DOCTYPE html>
+    <html lang="{metadata.get('language', 'zh-CN')}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="{author_text}">
+        <meta name="dc.creator" content="{author_text}">
+        <meta name="dc.title" content="{metadata.get('title', '')}">
+        <meta name="dc.language" content="{metadata.get('language', 'zh-CN')}">
+        <meta name="dc.rights" content="{metadata.get('rights', '')}">
+        <title>{metadata.get('title', '')}</title>
+        <style>
+            {css_styles}
+        </style>
+    </head>
+    <body>
+        <div class="content"></div>
+    </body>
+    </html>
+    """
+    
+    template_soup = BeautifulSoup(html_template, "html.parser")
+    
     # 创建图片目录
     images_dir = output_path.parent / 'images'
     images_dir.mkdir(parents=True, exist_ok=True)
@@ -134,26 +176,6 @@ def merge_html_files(input_dir: str, output_file: str):
                     print(f"警告: 在 {chapter} 中未找到内容")
         else:
             print(f"警告: 文件不存在 {chapter}")
-    
-    # 创建新的文档结构
-    template_soup = BeautifulSoup("""
-    <!DOCTYPE html>
-    <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <title>Go语言圣经</title>
-        <style>
-            body { max-width: 800px; margin: 0 auto; padding: 20px; }
-            img { max-width: 100%; height: auto; }
-            pre { white-space: pre-wrap; }
-            code { background: #f5f5f5; padding: 2px 5px; }
-        </style>
-    </head>
-    <body>
-        <div class="content"></div>
-    </body>
-    </html>
-    """, "html.parser")
     
     # 将合并的内容插入到模板中
     content_div = template_soup.find("div", class_="content")
