@@ -91,9 +91,12 @@
 % 图片设置
 \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
 \graphicspath{{./}{./images/}}
-% 只对图片设置最大宽度为页面宽度的 90%
+% 修改图片配置，使其居中显示
 \makeatletter
-\g@addto@macro\@floatboxreset{\linewidth=0.9\textwidth}
+\g@addto@macro\@floatboxreset{%
+    \centering  % 添加居中命令
+    \linewidth=0.9\textwidth
+}
 \makeatother
 \let\oldincludegraphics\includegraphics
 \renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
@@ -105,7 +108,7 @@
 }
 
 % 中文字体设置
-\setCJKmainfont{Songti SC}
+\setCJKmainfont{PingFang SC}
 
 % 超链接设置
 \hypersetup{
