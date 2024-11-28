@@ -39,6 +39,13 @@ class PandocConverter:
                 '-V', 'geometry=margin=2.5cm',
                 '-V', f'title=Go语言圣经',
                 '-V', f'author=译者: chai2010, Xargin, CrazySssst, foreversmart',
+                '--pdf-engine-opt=-shell-escape',
+                '--metadata', 'title=Go语言圣经',
+                '--metadata', 'author=译者: chai2010, Xargin, CrazySssst, foreversmart',
+                '--metadata', 'creator=LaTeX with hyperref',
+                '--metadata', 'producer=xelatex',
+                '--metadata', 'keywords=Go,Golang,编程',
+                '--metadata', 'subject=Go语言编程指南',
                 '-o', output_path,
                 input_path
             ]

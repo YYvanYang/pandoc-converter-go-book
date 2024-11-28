@@ -141,6 +141,11 @@ def merge_html_files(input_dir: str, output_file: str):
     <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
+        <meta name="author" content="译者: chai2010, Xargin, CrazySssst, foreversmart">
+        <meta name="dc.creator" content="译者: chai2010, Xargin, CrazySssst, foreversmart">
+        <meta name="dc.title" content="Go语言圣经">
+        <meta name="dc.language" content="zh-CN">
+        <meta name="dc.rights" content="CC BY-NC-SA 4.0">
         <title>Go语言圣经</title>
         <style>
             body { max-width: 800px; margin: 0 auto; padding: 20px; }
