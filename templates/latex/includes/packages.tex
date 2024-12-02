@@ -95,7 +95,7 @@
 \makeatletter
 \g@addto@macro\@floatboxreset{%
     \centering  % 添加居中命令
-    \linewidth=0.9\textwidth
+    \linewidth=\textwidth  % 修改为使用完整页面宽度
 }
 \makeatother
 \let\oldincludegraphics\includegraphics
@@ -108,7 +108,7 @@
 }
 
 % 中文字体设置
-\setCJKmainfont{PingFang SC}
+\setCJKmainfont{Songti SC}
 
 % 超链接设置
 \hypersetup{
