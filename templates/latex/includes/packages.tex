@@ -159,6 +159,27 @@
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
 
+% 图片设置
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\graphicspath{{./}{./images/}}
+
+% 修改图片配置，使其居中显示
+\makeatletter
+\g@addto@macro\@floatboxreset{%
+    \centering  % 添加居中命令
+    \linewidth=\textwidth  % 修改为使用完整页面宽度
+}
+\makeatother
+
+% 重新定义 includegraphics 命令以确保图片不会溢出
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
+
+% 图片错误处理
+\usepackage{silence}
+\WarningFilter{latex}{File}
+\WarningFilter{latex}{Cannot determine size}
+
 % hyperref 包需要放在最后
 \usepackage{hyperref}
 \hypersetup{
