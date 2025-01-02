@@ -24,6 +24,12 @@ all: install merge
 install:
 	@echo "安装依赖..."
 	$(PIP) install -r requirements.txt
+	@echo "复制 SF Mono 字体..."
+	@if [ ! -f ~/Library/Fonts/SF-Mono-Regular.otf ]; then \
+		mkdir -p ~/Library/Fonts && \
+		cp /Applications/Xcode.app/Contents/SharedFrameworks/DVTUserInterfaceKit.framework/Versions/A/Resources/Fonts/SF-Mono-* ~/Library/Fonts/ || \
+		echo "警告: SF Mono 字体复制失败，请确保已安装 Xcode"; \
+	fi
 
 # 合并HTML文件
 merge:
