@@ -1,177 +1,171 @@
 % 基础包
 \usepackage[utf8]{inputenc}
-\usepackage{xeCJK}      % 中文支持
+\usepackage{fontspec}
+\setmonofont{SF Mono}[
+    UprightFeatures={Font=* Regular},
+    BoldFeatures={Font=* Bold},
+    ItalicFeatures={Font=* Regular Italic},
+    BoldItalicFeatures={Font=* Bold Italic}
+]
+\usepackage[SlantFont,BoldFont]{xeCJK}
 \usepackage{graphicx}   % 图片支持
 \usepackage{geometry}   % 页面布局
 \usepackage{titlesec}   % 标题控制
 \usepackage{longtable}  % 长表格支持
 \usepackage{booktabs}   % 表格美化
-\usepackage{listings}   % 代码块支持
+\usepackage{array}      % 增强的表格功能
+\usepackage{calc}       % 长度计算支持
+\usepackage{ragged2e}   % 文本对齐支持
 \usepackage{xcolor}     % 颜色支持
-\usepackage{framed}     % 框架支持
 \usepackage{fancyvrb}   % 代码高亮支持
 \usepackage{fvextra}    % 扩展的代码支持
-
-% hyperref 包需要放在大多数包的后面
-\usepackage{hyperref}   % URL 支持
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue,
-    bookmarksnumbered=false,     % 书签中不显示编号
-    bookmarksopen=true,          % 展开书签
-    pdfstartview=FitH            % PDF 打开时适应页面宽度
-}
-% 关闭章节编号
-\setcounter{secnumdepth}{-2}
-% 重新定义章节格式，保持超链接
-\titleformat{\section}
-  {\normalfont\Large\bfseries}   % 格式
-  {}                             % 标签
-  {0pt}                          % 分隔符
-  {\phantomsection}              % 前置代码：添加 PDF 标签
-% 设置新章节另起一页，同时确保正确的页码引用
-\newcommand{\sectionbreak}{%
-  \clearpage
-  \phantomsection  % 为下一个章节创建超链接标记点
-}
+\usepackage{upquote}    % 智能引号
+\usepackage{microtype}  % 微排版
+\usepackage{etoolbox}   % 工具包
+\usepackage{unicode-math}    % Unicode数学支持
+\usepackage{enumitem}       % 列表环境增强
+\usepackage{caption}        % 图表标题
+\usepackage{subcaption}     % 子图表支持
+\usepackage{listings}       % 代码列表
+\usepackage{makeidx}        % 索引支持
+\usepackage{bookmark}       % PDF书签增强
 
 % 定义代码高亮颜色
 \definecolor{shadecolor}{RGB}{248,248,248}
-\definecolor{comment}{RGB}{128,128,128}
-\definecolor{keyword}{RGB}{0,112,192}
-\definecolor{string}{RGB}{0,136,0}
-\definecolor{identifier}{RGB}{0,0,0}
-\definecolor{number}{RGB}{128,0,128}
+\definecolor{commentcolor}{RGB}{128,128,128}
+\definecolor{keywordcolor}{RGB}{0,112,192}
+\definecolor{stringcolor}{RGB}{0,136,0}
+\definecolor{identifiercolor}{RGB}{0,0,0}
+\definecolor{numbercolor}{RGB}{128,0,128}
 
-% 定义代码高亮环境
-\newenvironment{Shaded}
-    {\begin{snugshade}\small\ttfamily}
-    {\end{snugshade}}
-
-\newenvironment{Highlighting}
-    {\begin{Verbatim}[commandchars=\\\{\},fontsize=\small,breaklines=true,breakanywhere=true]}
-    {\end{Verbatim}}
-
-% 定义所有可能的代码高亮 token
-\newcommand{\KeywordTok}[1]{\textcolor{keyword}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor{number}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor{number}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor{number}{#1}}
-\newcommand{\CharTok}[1]{\textcolor{string}{#1}}
-\newcommand{\StringTok}[1]{\textcolor{string}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor{comment}{\textit{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor{identifier}{#1}}
-\newcommand{\AlertTok}[1]{\textcolor{red}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor{identifier}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\ErrorTok}[1]{\textbf{\textcolor{red}{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\AttributeTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\RegionTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor{red}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor{comment}{#1}}
-\newcommand{\CommentVarTok}[1]{\textcolor{comment}{\textit{#1}}}
-\newcommand{\VariableTok}[1]{\textcolor{identifier}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textbf{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor{string}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor{string}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor{string}{#1}}
-\newcommand{\ConstantTok}[1]{\textcolor{number}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor{keyword}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor{comment}{\textit{#1}}}
-\newcommand{\SectionTok}[1]{\textbf{#1}}
-
-% 图片设置
-\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
-\graphicspath{{./}{./images/}}
-% 修改图片配置，使其居中显示
-\makeatletter
-\g@addto@macro\@floatboxreset{%
-    \centering  % 添加居中命令
-    \linewidth=\textwidth  % 修改为使用完整页面宽度
-}
-\makeatother
-\let\oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
-
-% 页面设置
-\geometry{
-    a4paper,
-    margin=2.5cm
-}
-
-% 中文字体设置
-\setCJKmainfont{Songti SC}
-
-% 超链接设置
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue
-}
-
-% 定义基本命令
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-% 定义 pandoc 相关命令
-\providecommand{\pandocbounded}[1]{#1}
-
-% 代码块设置
-\lstset{
-    breaklines=true,
-    basicstyle=\ttfamily\small,
-    frame=single,
-    numbers=left,
-    numberstyle=\tiny,
-    keywordstyle=\color{keyword},
-    commentstyle=\color{comment},
-    stringstyle=\color{string},
-    showstringspaces=false,
-    backgroundcolor=\color{shadecolor},
-    breakatwhitespace=false,
-    breakindent=0pt,
-    keepspaces=true,
-    columns=flexible,
-    escapeinside={(*@}{@*)},
-    linewidth=\textwidth,     % 设置代码块宽度为页面宽度
-    xleftmargin=0pt,         % 移除左边距
-    xrightmargin=0pt,        % 移除右边距
-    belowskip=\medskipamount, % 设置代码块下方间距
-    aboveskip=\medskipamount  % 设置代码块上方间距
-}
-
-% 图片错误处理
-\usepackage{silence}
-\WarningFilter{latex}{File}
-\WarningFilter{latex}{Cannot determine size}
-
-% 设置代码块换行
+% 设置代码块
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
     commandchars=\\\{\},
     breaklines=true,
     breakanywhere=true,
-    xleftmargin=0pt,         % 移除左边距
-    xrightmargin=0pt,        % 移除右边距
-    baselinestretch=1.2,     % 设置行间距
-    fontsize=\small          % 设置字体大小
+    fontsize=\small,
+    frame=single,
+    rulecolor=\color{black!30},
+    framesep=3pt,
+    baselinestretch=1.2,
+    xleftmargin=0.5em,
+    xrightmargin=0.5em,
+    formatcom={\normalfont\ttfamily}
 }
 
-% 重新定义 Shaded 环境
-\renewenvironment{Shaded}{
-    \begin{snugshade}
-    \begin{adjustwidth}{0pt}{0pt} % 移除左右边距
-}{
-    \end{adjustwidth}
-    \end{snugshade}
+% 定义代码块背景
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\newenvironment{Shaded}{}{}
+
+% 定义所有必要的代码高亮 token
+\newcommand{\KeywordTok}[1]{\textcolor{keywordcolor}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor{numbercolor}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor{numbercolor}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor{numbercolor}{#1}}
+\newcommand{\CharTok}[1]{\textcolor{stringcolor}{#1}}
+\newcommand{\StringTok}[1]{\textcolor{stringcolor}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor{identifiercolor}{#1}}
+\newcommand{\AlertTok}[1]{\textcolor{red}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor{identifiercolor}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\ErrorTok}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor{identifiercolor}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textbf{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor{numbercolor}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor{stringcolor}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor{stringcolor}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor{stringcolor}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor{red}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor{keywordcolor}{#1}}
+\newcommand{\SectionTok}[1]{\textbf{#1}}
+
+% 页面设置
+\geometry{
+    a4paper,
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm,
+    headheight=14pt,
+    footskip=1cm,
+    includehead,
+    includefoot
 }
 
-% 添加 adjustwidth 环境支持
-\usepackage{changepage}
+% 中文字体设置
+\setCJKmainfont[
+    BoldFont={Songti SC Bold},
+    ItalicFont={Songti SC Light},
+    BoldItalicFont={Songti SC Bold}
+]{Songti SC}
+\setCJKsansfont[
+    BoldFont={PingFang SC Semibold},
+    ItalicFont={PingFang SC Light}
+]{PingFang SC}
+\setCJKmonofont{STFangsong}
+
+% 修改中文标点设置，只在正文使用全角标点
+\punctstyle{kaiming}  % 改用开明式标点
+\normalspacedchars{/}
+
+% 为代码环境单独设置标点样式
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    texcl=true,
+    keepspaces=true,
+    columns=flexible,
+    upquote=true,
+    fontadjust=true,
+    basewidth={0.5em,0.45em}
+}
+
+% 基本命令
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% 添加 pandoc 相关命令
+\providecommand{\pandocbounded}[1]{#1}
+
+% 优化段落间距
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{2em}
+
+% 在页面设置后添加
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+
+% 设置目录深度
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% hyperref 包需要放在最后
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    bookmarksnumbered=false,
+    bookmarksopen=true,
+    pdfstartview=FitH
+}
