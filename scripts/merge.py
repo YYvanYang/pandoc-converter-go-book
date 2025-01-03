@@ -87,6 +87,17 @@ def merge_html_files(input_dir: str, output_file: str):
         img { max-width: 100%; height: auto; }
         pre { white-space: pre-wrap; }
         code { background: #f5f5f5; padding: 2px 5px; }
+        header.file-name { 
+            font-weight: bold;
+            color: #333;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            text-decoration: underline;
+            text-decoration-style: solid;
+            font-family: monospace;
+        }
     """
     
     # 创建新的文档结构
@@ -173,6 +184,7 @@ def merge_html_files(input_dir: str, output_file: str):
                     # 转换 span.file-name 为 header
                     for span in content.find_all("span", class_="file-name"):
                         header = chapter_soup.new_tag("header")
+                        header["class"] = "file-name"
                         header.string = span.string
                         span.replace_with(header)
                     
