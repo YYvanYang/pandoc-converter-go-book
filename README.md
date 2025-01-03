@@ -113,7 +113,7 @@ Windows:
 # 使用 make 命令一键转换
 make
 
-# 默认会生成类似 go语言圣经-20240126.pdf 的输出文件
+# 默认会生成类似 the-rust-programming-language-20240126.pdf 的输出文件
 ```
 
 2. **直接使用 Python 脚本**

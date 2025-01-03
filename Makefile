@@ -14,7 +14,7 @@ DEFAULT_PDF = $(OUTPUT_DIR)/document.pdf
 DATE := $(shell date +%Y%m%d)
 
 # 设置输出文件名 (书名+日期)
-OUTPUT_FILE = go语言圣经-$(DATE).pdf
+OUTPUT_FILE = the-rust-programming-language-$(DATE).pdf
 
 # 默认目标：安装依赖，合并并转换
 all: install merge

@@ -167,9 +167,21 @@ def merge_html_files(input_dir: str, output_file: str):
                             if new_src:
                                 img["src"] = new_src
                             else:
-                                # 如果找不到图片，移除图片标签
                                 print(f"警告: 找不到图片 {src}，移除此图片")
                                 img.decompose()
+                    
+                    # 转换 span.file-name 为 header
+                    for span in content.find_all("span", class_="file-name"):
+                        header = chapter_soup.new_tag("header")
+                        header.string = span.string
+                        span.replace_with(header)
+                    
+                    # 转换 figure.listing 为 p
+                    for figure in content.find_all("figure", class_="listing"):
+                        p = chapter_soup.new_tag("p")
+                        # 将 figure 的内容移到 p 中
+                        p.extend(figure.contents)
+                        figure.replace_with(p)
                     
                     merged_content.append(str(content))
                 else:
