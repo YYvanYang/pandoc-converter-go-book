@@ -19,21 +19,18 @@
 - TeX Live 2021+（完整版）
 - Make（可选）
 - 字体要求：
-  - 中文字体（按优先级排序）：
-    - 正文字体：
+  - SF Mono（等宽代码字体）
+  - 中文字体：
+    - 宋体-简 (Songti SC) - 正文
+    - 苹方-简 (PingFang SC) - 标题
+    - 仿宋-简 (STFangsong) - 等宽中文
+  - 备选字体方案：
+    - 思源字体系列：
       - 思源宋体 (Noto Serif CJK SC)
-      - 宋体-简 (Songti SC) [仅 macOS]
-      - 方正书宋 (FZShuSong)
-      - 中易宋体 (SimSun) [仅 Windows]
-    - 标题字体：
       - 思源黑体 (Noto Sans CJK SC)
-      - 苹方-简 (PingFang SC) [仅 macOS]
-      - 方正黑体 (FZHei)
-      - 中易黑体 (SimHei) [仅 Windows]
-  - 英文字体：
-    - Times New Roman - 正文
-    - Helvetica/Arial - 标题
-    - Source Code Pro/Menlo/Consolas - 代码
+    - Windows 平台：
+      - 中易宋体 (SimSun)
+      - 中易黑体 (SimHei)
 
 ## 安装
 
@@ -48,27 +45,24 @@ cd pandoc-converter
 
 macOS:
 ```bash
-# 安装思源字体
-brew install --cask font-noto-serif-cjk font-noto-sans-cjk
-
-# 安装代码字体
-brew install --cask font-source-code-pro
+# SF Mono 字体已预装在 macOS 系统中
+# 宋体-简和苹方-简也是系统默认字体
 ```
 
 Ubuntu/Debian:
 ```bash
-# 安装思源字体
+# 安装思源字体作为备选
 sudo apt-get install fonts-noto-cjk fonts-noto-cjk-extra
 
-# 安装代码字体
-sudo apt-get install fonts-source-code-pro
+# 需要手动安装 SF Mono
+# 从 Apple 开发者网站下载并安装
 ```
 
 Windows:
-- 下载 [Noto Serif CJK SC](https://github.com/googlefonts/noto-cjk/releases) (思源宋体)
-- 下载 [Noto Sans CJK SC](https://github.com/googlefonts/noto-cjk/releases) (思源黑体)
-- 下载 [Source Code Pro](https://github.com/adobe-fonts/source-code-pro/releases)
-- 双击字体文件安装
+- 从 Apple 开发者网站下载并安装 SF Mono
+- 安装思源字体作为备选：
+  - 下载 [Noto Serif CJK SC](https://github.com/googlefonts/noto-cjk/releases)
+  - 下载 [Noto Sans CJK SC](https://github.com/googlefonts/noto-cjk/releases)
 
 3. **创建虚拟环境**
 
@@ -177,36 +171,74 @@ toc:
 
 1. **修改页面布局**
 
-编辑 `templates/latex/includes/layout.tex`:
+编辑 `templates/latex/includes/packages.tex`:
 ```tex
 \geometry{
-    top=2.5cm,
-    bottom=2.5cm,
-    left=2.5cm,
-    right=2.5cm
+    a4paper,
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm,
+    headheight=14pt,
+    footskip=1cm,
+    includehead,
+    includefoot
 }
 ```
 
 2. **修改字体设置**
 
-编辑 `templates/latex/includes/fonts.tex`:
+编辑 `templates/latex/includes/packages.tex`:
 ```tex
-\setCJKmainfont[BoldFont={SimHei}]{SimSun}
-\setmainfont{Times New Roman}
+% 中文字体设置
+\setCJKmainfont[
+    BoldFont={Songti SC Bold},
+    ItalicFont={Songti SC Light},
+    BoldItalicFont={Songti SC Bold}
+]{Songti SC}
+\setCJKsansfont[
+    BoldFont={PingFang SC Semibold},
+    ItalicFont={PingFang SC Light}
+]{PingFang SC}
+\setCJKmonofont{STFangsong}
+
+% 等宽字体设置
+\setmonofont{SF Mono}[
+    UprightFeatures={Font=* Regular},      % 常规字体
+    BoldFeatures={Font=* Bold},            % 粗体
+    ItalicFeatures={Font=* Regular Italic}, % 斜体
+    BoldItalicFeatures={Font=* Bold Italic}% 粗斜体
+]
 ```
 
 ### LaTeX 排版特性
 
-- 支持自动代码高亮，包含多种编程语言
-- 图片自动缩放至页面宽度的 90%
+- 支持自动代码高亮，使用精心调校的配色方案：
+  - 关键字：蓝色 (RGB: 0,112,192)
+  - 字符串：绿色 (RGB: 0,136,0)
+  - 注释：灰色 (RGB: 128,128,128)
+  - 数字：紫色 (RGB: 128,0,128)
+- 章节标题格式优化：
+  - 所有级别章节均不显示编号
+  - 主章节：大号加粗
+  - 二级章节：中号加粗
+  - 三级章节：正常大小加粗
+  - 每个章节都配有PDF书签锚点
+  - 新章节自动分页
 - 中英文混排字体智能处理：
-  - 中文正文：宋体-简 (Songti SC)
-  - 中文标题：苹方 (PingFang SC)
-  - 英文正文：Times New Roman
-  - 英文标题：Helvetica
-  - 代码：Menlo
-- 支持代码块自动换行
-- 完整的超链接支持（包含目录、交叉引用）
+  - 中文正文：宋体-简 (Songti SC)，支持粗体和斜体
+  - 中文标题：苹方-简 (PingFang SC)
+  - 等宽字体：SF Mono，支持四种样式（常规、粗体、斜体、粗斜体）
+- 代码块增强：
+  - 自动换行
+  - 单行框架
+  - 浅灰色背景 (RGB: 248,248,248)
+  - 合适的内边距和行间距
+- 完整的超链接支持：
+  - PDF书签导航
+  - 交叉引用
+  - 目录链接
+  - 使用蓝色标识链接文本
 
 ## 项目结构
 
