@@ -30,6 +30,20 @@
 \usepackage{makeidx}        % 索引支持
 \usepackage{bookmark}       % PDF书签增强
 
+% 关闭章节编号
+\setcounter{secnumdepth}{-2}
+% 重新定义章节格式，保持超链接
+\titleformat{\section}
+  {\normalfont\Large\bfseries}   % 格式
+  {}                             % 标签
+  {0pt}                          % 分隔符
+  {\phantomsection}              % 前置代码：添加 PDF 标签
+% 设置新章节另起一页，同时确保正确的页码引用
+\newcommand{\sectionbreak}{%
+  \clearpage
+  \phantomsection  % 为下一个章节创建超链接标记点
+}
+
 % 定义代码高亮颜色
 \definecolor{shadecolor}{RGB}{248,248,248}
 \definecolor{commentcolor}{RGB}{128,128,128}
