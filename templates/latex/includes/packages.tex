@@ -1,12 +1,16 @@
 % 基础包
+% 输入编码设置
 \usepackage[utf8]{inputenc}
+% 字体规范设置包
 \usepackage{fontspec}
+% 设置等宽字体为 SF Mono，并配置其不同样式
 \setmonofont{SF Mono}[
-    UprightFeatures={Font=* Regular},
-    BoldFeatures={Font=* Bold},
-    ItalicFeatures={Font=* Regular Italic},
-    BoldItalicFeatures={Font=* Bold Italic}
+    UprightFeatures={Font=* Regular},      % 常规字体
+    BoldFeatures={Font=* Bold},            % 粗体
+    ItalicFeatures={Font=* Regular Italic}, % 斜体
+    BoldItalicFeatures={Font=* Bold Italic}% 粗斜体
 ]
+% 中文支持包，启用斜体和粗体
 \usepackage[SlantFont,BoldFont]{xeCJK}
 \usepackage{graphicx}   % 图片支持
 \usepackage{geometry}   % 页面布局
@@ -30,18 +34,34 @@
 \usepackage{makeidx}        % 索引支持
 \usepackage{bookmark}       % PDF书签增强
 
-% 关闭章节编号
-\setcounter{secnumdepth}{-2}
-% 重新定义章节格式，保持超链接
+% 章节设置
+\setcounter{secnumdepth}{-1}  % 设置章节编号深度为-1，关闭所有级别章节的编号显示
+
+% 主章节(section)格式设置
 \titleformat{\section}
-  {\normalfont\Large\bfseries}   % 格式
-  {}                             % 标签
-  {0pt}                          % 分隔符
-  {\phantomsection}              % 前置代码：添加 PDF 标签
-% 设置新章节另起一页，同时确保正确的页码引用
+  {\normalfont\Large\bfseries}   % 使用无衬线字体，大号加粗
+  {}                             % 不显示章节编号
+  {0pt}                          % 标题和编号间距为0
+  {\phantomsection}              % 添加PDF书签锚点
+
+% 二级章节(subsection)格式设置
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}   % 使用无衬线字体，中号加粗
+  {}                             % 不显示章节编号
+  {0pt}                          % 标题和编号间距为0
+  {\phantomsection}              % 添加PDF书签锚点
+
+% 三级章节(subsubsection)格式设置
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}   % 使用无衬线字体，正常大小加粗
+  {}                                  % 不显示章节编号
+  {0pt}                              % 标题和编号间距为0
+  {\phantomsection}                  % 添加PDF书签锚点
+
+% 设置新章节分页
 \newcommand{\sectionbreak}{%
-  \clearpage
-  \phantomsection  % 为下一个章节创建超链接标记点
+  \clearpage                % 在新章节前强制分页
+  \phantomsection          % 为新章节添加PDF书签锚点
 }
 
 % 定义代码高亮颜色
