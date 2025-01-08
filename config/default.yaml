@@ -1,14 +1,14 @@
 ---
 # 文档元数据
 metadata:
-  title: "The Rust Programming Language"
+  title: "Vue.js 3 官方文档"
   authors:
-    - "by Steve Klabnik and Carol Nichols, with contributions from the Rust Community"
-  author_prefix: ""
-  language: "en-US"
+    - "Vue.js 核心团队"
+  author_prefix: "作者:"
+  language: "zh-CN"
   rights: "CC BY-NC-SA 4.0"
-  keywords: "Rust,Systems Programming,Programming"
-  subject: "The Rust Programming Language Guide"
+  keywords: "Vue.js,JavaScript,前端开发,框架"
+  subject: "Vue.js 3 官方文档中文版"
   creator: "LaTeX with hyperref"
   producer: "xelatex"
 
@@ -39,7 +39,7 @@ page:
 fonts:
   main: SimSun
   sans: SimHei
-  mono: SimFang
+  mono: "SF Mono"
   size: 12pt
   
 # 处理设置

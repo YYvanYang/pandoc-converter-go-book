@@ -10,3 +10,4 @@ data/output/*
 .env
 venv/
 .idea/ 
+svg-inkscape/

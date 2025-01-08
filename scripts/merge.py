@@ -8,6 +8,47 @@ from urllib.parse import unquote, urlparse
 import hashlib
 from utils.config import Config
 
+def extract_sidebar_structure(soup):
+    """从HTML文档中提取侧边栏结构"""
+    sidebar = soup.find("aside", class_="VPSidebar")
+    if not sidebar:
+        return []
+    
+    structure = []
+    groups = sidebar.find_all("div", class_="group")
+    
+    for group in groups:
+        section = group.find("section", class_="VPSidebarGroup")
+        if not section:
+            continue
+            
+        title = section.find("h2", class_="title-text")
+        if not title:
+            continue
+            
+        group_data = {
+            "title": title.get_text(strip=True),
+            "items": []
+        }
+        
+        links = section.find_all("a", class_="link")
+        for link in links:
+            href = link.get("href", "")
+            if href.startswith("/"):
+                href = href[1:]  # 移除开头的斜杠
+            
+            text = link.find("p", class_="link-text")
+            if text:
+                group_data["items"].append({
+                    "title": text.get_text(strip=True),
+                    "href": href
+                })
+        
+        if group_data["items"]:
+            structure.append(group_data)
+    
+    return structure
+
 def sanitize_filename(filename: str) -> str:
     """清理文件名，移除特殊字符"""
     # 获取文件扩展名
@@ -98,6 +139,28 @@ def merge_html_files(input_dir: str, output_file: str):
             text-decoration-style: solid;
             font-family: monospace;
         }
+        .toc { margin-bottom: 20px; }
+        .toc h2 { margin-bottom: 10px; }
+        .toc-group { margin-bottom: 15px; }
+        .toc-group-title { 
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .toc-items { 
+            margin-left: 20px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc-item { margin-bottom: 3px; }
+        .toc-item a {
+            color: #476582;
+            text-decoration: none;
+        }
+        .toc-item a:hover {
+            color: #3eaf7c;
+            text-decoration: underline;
+        }
     """
     
     # 创建新的文档结构
@@ -117,6 +180,7 @@ def merge_html_files(input_dir: str, output_file: str):
         </style>
     </head>
     <body>
+        <div class="toc"></div>
         <div class="content"></div>
     </body>
     </html>
@@ -129,77 +193,65 @@ def merge_html_files(input_dir: str, output_file: str):
     images_dir.mkdir(parents=True, exist_ok=True)
     
     # 读取主文件
-    with open(input_path / "index.html", "r", encoding="utf-8") as f:
+    with open(input_path / "guide/introduction.html", "r", encoding="utf-8") as f:
         main_soup = BeautifulSoup(f.read(), "html.parser")
     
-    # 获取导航栏中的章节链接
-    nav = main_soup.find("nav", class_="sidebar")
-    if not nav:
-        raise ValueError("无法找到导航栏")
+    # 提取侧边栏结构
+    structure = extract_sidebar_structure(main_soup)
     
-    # 收集所有章节链接
-    chapters = []
-    for link in nav.find_all("a"):
-        href = link.get("href")
-        if href:
-            href = unquote(href.replace("./", ""))
-            chapters.append(href)
+    # 创建目录
+    toc_div = template_soup.find("div", class_="toc")
+    toc_div.append(template_soup.new_tag("h2", string="目录"))
     
-    # 创建新的内容容器
-    merged_content = []
+    for group in structure:
+        group_div = template_soup.new_tag("div", attrs={"class": "toc-group"})
+        group_title = template_soup.new_tag("div", attrs={"class": "toc-group-title"})
+        group_title.string = group["title"]
+        group_div.append(group_title)
+        
+        items_ul = template_soup.new_tag("ul", attrs={"class": "toc-items"})
+        for item in group["items"]:
+            item_li = template_soup.new_tag("li", attrs={"class": "toc-item"})
+            item_a = template_soup.new_tag("a", href=f"#{item['href']}")
+            item_a.string = item["title"]
+            item_li.append(item_a)
+            items_ul.append(item_li)
+        
+        group_div.append(items_ul)
+        toc_div.append(group_div)
     
     # 合并所有文件
-    for chapter in chapters:
-        chapter_path = input_path / chapter
-        if chapter_path.exists():
-            print(f"处理章节: {chapter}")
-            with open(chapter_path, "r", encoding="utf-8") as f:
-                chapter_soup = BeautifulSoup(f.read(), "html.parser")
-                
-                # 获取主要内容
-                content = chapter_soup.find("div", id="content")
-                if not content:
-                    content = chapter_soup.find("main")
-                if not content:
-                    content = chapter_soup.find("div", class_="content")
-                
-                if content:
-                    # 移除导航栏和不需要的元素
-                    for nav in content.find_all("nav"):
-                        nav.decompose()
-                    for sidebar in content.find_all("div", class_="sidebar"):
-                        sidebar.decompose()
+    merged_content = []
+    for group in structure:
+        for item in group["items"]:
+            file_path = input_path / item["href"]
+            if file_path.exists():
+                print(f"处理章节: {item['href']}")
+                with open(file_path, "r", encoding="utf-8") as f:
+                    chapter_soup = BeautifulSoup(f.read(), "html.parser")
                     
-                    # 处理图片
-                    for img in content.find_all("img"):
-                        src = img.get("src")
-                        if src:
-                            new_src = fix_image_path(src, input_path, images_dir)
-                            if new_src:
-                                img["src"] = new_src
-                            else:
-                                print(f"警告: 找不到图片 {src}，移除此图片")
-                                img.decompose()
-                    
-                    # 转换 span.file-name 为 header
-                    for span in content.find_all("span", class_="file-name"):
-                        header = chapter_soup.new_tag("header")
-                        header["class"] = "file-name"
-                        header.string = span.string
-                        span.replace_with(header)
-                    
-                    # 转换 figure.listing 为 p
-                    for figure in content.find_all("figure", class_="listing"):
-                        p = chapter_soup.new_tag("p")
-                        # 将 figure 的内容移到 p 中
-                        p.extend(figure.contents)
-                        figure.replace_with(p)
-                    
-                    merged_content.append(str(content))
-                else:
-                    print(f"警告: 在 {chapter} 中未找到内容")
-        else:
-            print(f"警告: 文件不存在 {chapter}")
+                    # 获取主要内容
+                    content = chapter_soup.find("div", class_="vt-doc")
+                    if content:
+                        # 处理图片
+                        for img in content.find_all("img"):
+                            src = img.get("src")
+                            if src:
+                                new_src = fix_image_path(src, input_path, images_dir)
+                                if new_src:
+                                    img["src"] = new_src
+                                else:
+                                    print(f"警告: 找不到图片 {src}，移除此图片")
+                                    img.decompose()
+                        
+                        # 添加章节锚点
+                        section = template_soup.new_tag("section", id=item["href"])
+                        section.append(content)
+                        merged_content.append(str(section))
+                    else:
+                        print(f"警告: 在 {item['href']} 中未找到内容")
+            else:
+                print(f"警告: 文件不存在 {item['href']}")
     
     # 将合并的内容插入到模板中
     content_div = template_soup.find("div", class_="content")
