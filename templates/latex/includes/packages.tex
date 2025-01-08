@@ -1,71 +1,136 @@
-% 基础包
-% 输入编码设置
+% ====== 1. 基础包和编码设置 ======
 \usepackage[utf8]{inputenc}
-% 字体规范设置包
-\usepackage{fontspec}
-% 设置等宽字体为 SF Mono，并配置其不同样式
-\setmonofont{SF Mono}[
-    UprightFeatures={Font=* Regular},      % 常规字体
-    BoldFeatures={Font=* Bold},            % 粗体
-    ItalicFeatures={Font=* Regular Italic}, % 斜体
-    BoldItalicFeatures={Font=* Bold Italic}% 粗斜体
-]
-% 中文支持包，启用斜体和粗体
-\usepackage[SlantFont,BoldFont]{xeCJK}
-\usepackage{graphicx}   % 图片支持
-\usepackage{svg}        % SVG 支持
-\usepackage{geometry}   % 页面布局
-\usepackage{titlesec}   % 标题控制
-\usepackage{longtable}  % 长表格支持
-\usepackage{booktabs}   % 表格美化
-\usepackage{array}      % 增强的表格功能
+\usepackage{etoolbox}   % 工具包，需要最早加载
 \usepackage{calc}       % 长度计算支持
-\usepackage{ragged2e}   % 文本对齐支持
-\usepackage{xcolor}     % 颜色支持
-\usepackage{fancyvrb}   % 代码高亮支持
-\usepackage{fvextra}    % 扩展的代码支持
-\usepackage{upquote}    % 智能引号
-\usepackage{microtype}  % 微排版
-\usepackage{etoolbox}   % 工具包
-\usepackage{unicode-math}    % Unicode数学支持
-\usepackage{enumitem}       % 列表环境增强
-\usepackage{caption}        % 图表标题
-\usepackage{subcaption}     % 子图表支持
-\usepackage{listings}       % 代码列表
-\usepackage{makeidx}        % 索引支持
-\usepackage{bookmark}       % PDF书签增强
 
-% 章节设置
-\setcounter{secnumdepth}{-1}  % 设置章节编号深度为-1，关闭所有级别章节的编号显示
-
-% 主章节(section)格式设置
-\titleformat{\section}
-  {\normalfont\Large\bfseries}   % 使用无衬线字体，大号加粗
-  {}                             % 不显示章节编号
-  {0pt}                          % 标题和编号间距为0
-  {\phantomsection}              % 添加PDF书签锚点
-
-% 二级章节(subsection)格式设置
-\titleformat{\subsection}
-  {\normalfont\large\bfseries}   % 使用无衬线字体，中号加粗
-  {}                             % 不显示章节编号
-  {0pt}                          % 标题和编号间距为0
-  {\phantomsection}              % 添加PDF书签锚点
-
-% 三级章节(subsubsection)格式设置
-\titleformat{\subsubsection}
-  {\normalfont\normalsize\bfseries}   % 使用无衬线字体，正常大小加粗
-  {}                                  % 不显示章节编号
-  {0pt}                              % 标题和编号间距为0
-  {\phantomsection}                  % 添加PDF书签锚点
-
-% 设置新章节分页
-\newcommand{\sectionbreak}{%
-  \clearpage                % 在新章节前强制分页
-  \phantomsection          % 为新章节添加PDF书签锚点
+% ====== 2. 页面布局和排版设置 ======
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm,
+    headheight=14pt,
+    footskip=1cm,
+    includehead,
+    includefoot
 }
 
-% 定义代码高亮颜色
+% 优化段落间距
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{2em}
+
+% 浮动体比例设置
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+
+% ====== 3. 字体和语言支持 ======
+\usepackage{fontspec}
+\usepackage[SlantFont,BoldFont]{xeCJK}
+\usepackage{unicode-math}    % Unicode数学支持
+\usepackage{microtype}  % 微排版
+
+% 等宽字体设置
+\setmonofont{SF Mono}[
+    UprightFeatures={Font=* Regular},
+    BoldFeatures={Font=* Bold},
+    ItalicFeatures={Font=* Regular Italic},
+    BoldItalicFeatures={Font=* Bold Italic}
+]
+
+% 中文字体设置
+\setCJKmainfont[
+    BoldFont={Songti SC Bold},
+    ItalicFont={Songti SC Light},
+    BoldItalicFont={Songti SC Bold}
+]{Songti SC}
+\setCJKsansfont[
+    BoldFont={PingFang SC Semibold},
+    ItalicFont={PingFang SC Light}
+]{PingFang SC}
+\setCJKmonofont{STFangsong}
+
+% 中文标点设置
+\punctstyle{kaiming}
+\normalspacedchars{/}
+
+% ====== 4. 章节和目录设置 ======
+\usepackage{titlesec}
+\usepackage{bookmark}       % PDF书签增强
+
+% 章节编号深度设置
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{3}
+
+% 章节格式设置
+\titleformat{\section}
+    {\normalfont\Large\bfseries}
+    {}
+    {0pt}
+    {\phantomsection}
+
+\titleformat{\subsection}
+    {\normalfont\large\bfseries}
+    {}
+    {0pt}
+    {\phantomsection}
+
+\titleformat{\subsubsection}
+    {\normalfont\normalsize\bfseries}
+    {}
+    {0pt}
+    {\phantomsection}
+
+% 新章节分页设置
+\newcommand{\sectionbreak}{%
+    \clearpage
+    \phantomsection
+}
+
+% ====== 5. 图表支持 ======
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+
+% 图片路径和扩展名设置
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.svg}
+\graphicspath{{./}{./images/}}
+
+% SVG 配置
+\svgsetup{
+    inkscapeexe=/opt/homebrew/bin/inkscape,
+    inkscapearea=page,
+    inkscapeformat=pdf
+}
+
+% 图片居中显示设置
+\makeatletter
+\g@addto@macro\@floatboxreset{%
+    \centering
+    \linewidth=\textwidth
+}
+\makeatother
+
+% 重定义 includegraphics 命令
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
+
+% ====== 6. 代码和列表支持 ======
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+% 代码高亮颜色定义
 \definecolor{shadecolor}{RGB}{248,248,248}
 \definecolor{commentcolor}{RGB}{128,128,128}
 \definecolor{keywordcolor}{RGB}{0,112,192}
@@ -73,7 +138,7 @@
 \definecolor{identifiercolor}{RGB}{0,0,0}
 \definecolor{numbercolor}{RGB}{128,0,128}
 
-% 设置代码块
+% 代码环境设置
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
     commandchars=\\\{\},
     breaklines=true,
@@ -88,11 +153,29 @@
     formatcom={\normalfont\ttfamily}
 }
 
-% 定义代码块背景
+% 代码块背景
 \definecolor{shadecolor}{rgb}{.97, .97, .97}
 \newenvironment{Shaded}{}{}
 
-% 定义所有必要的代码高亮 token
+% 代码列表设置
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    texcl=true,
+    keepspaces=true,
+    columns=flexible,
+    upquote=true,
+    fontadjust=true,
+    basewidth={0.5em,0.45em}
+}
+
+% 代码高亮 token 定义
 \newcommand{\KeywordTok}[1]{\textcolor{keywordcolor}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor{keywordcolor}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor{numbercolor}{#1}}
@@ -126,103 +209,21 @@
 \newcommand{\PreprocessorTok}[1]{\textcolor{keywordcolor}{#1}}
 \newcommand{\SectionTok}[1]{\textbf{#1}}
 
-% 页面设置
-\geometry{
-    a4paper,
-    top=2cm,
-    bottom=2cm,
-    left=2cm,
-    right=2cm,
-    headheight=14pt,
-    footskip=1cm,
-    includehead,
-    includefoot
-}
-
-% 中文字体设置
-\setCJKmainfont[
-    BoldFont={Songti SC Bold},
-    ItalicFont={Songti SC Light},
-    BoldItalicFont={Songti SC Bold}
-]{Songti SC}
-\setCJKsansfont[
-    BoldFont={PingFang SC Semibold},
-    ItalicFont={PingFang SC Light}
-]{PingFang SC}
-\setCJKmonofont{STFangsong}
-
-% 修改中文标点设置，只在正文使用全角标点
-\punctstyle{kaiming}  % 改用开明式标点
-\normalspacedchars{/}
-
-% 为代码环境单独设置标点样式
-\lstset{
-    basicstyle=\small\ttfamily,
-    breaklines=true,
-    frame=single,
-    numbers=left,
-    numberstyle=\tiny,
-    keywordstyle=\color{keywordcolor}\bfseries,
-    commentstyle=\color{commentcolor}\itshape,
-    stringstyle=\color{stringcolor},
-    texcl=true,
-    keepspaces=true,
-    columns=flexible,
-    upquote=true,
-    fontadjust=true,
-    basewidth={0.5em,0.45em}
-}
-
-% 基本命令
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-% 添加 pandoc 相关命令
-\providecommand{\pandocbounded}[1]{#1}
-
-% 优化段落间距
-\setlength{\parskip}{0.5em}
-\setlength{\parindent}{2em}
-
-% 在页面设置后添加
-\renewcommand{\textfraction}{0.15}
-\renewcommand{\topfraction}{0.85}
-\renewcommand{\bottomfraction}{0.65}
-\renewcommand{\floatpagefraction}{0.60}
-
-% 设置目录深度
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{3}
-
-% 图片设置
-\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.svg}
-\graphicspath{{./}{./images/}}
-
-% 修改图片配置，使其居中显示
-\makeatletter
-\g@addto@macro\@floatboxreset{%
-    \centering  % 添加居中命令
-    \linewidth=\textwidth  % 修改为使用完整页面宽度
-}
-\makeatother
-
-% SVG 图片处理配置
-\svgsetup{
-    inkscapeexe=/opt/homebrew/bin/inkscape,
-    inkscapearea=page,
-    inkscapeformat=pdf
-}
-
-% 重新定义 includegraphics 命令以确保图片不会溢出
-\let\oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[2][]{\oldincludegraphics[width=\linewidth,keepaspectratio,#1]{#2}}
+% ====== 7. 其他功能支持 ======
+\usepackage{makeidx}        % 索引支持
+\usepackage{ragged2e}       % 文本对齐支持
+\usepackage{silence}        % 警告控制
 
 % 图片错误处理
-\usepackage{silence}
 \WarningFilter{latex}{File}
 \WarningFilter{latex}{Cannot determine size}
 
-% hyperref 包需要放在最后
+% Pandoc 相关命令
+\providecommand{\tightlist}{%
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+
+% ====== 8. Hyperref 设置（必须最后加载）======
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
