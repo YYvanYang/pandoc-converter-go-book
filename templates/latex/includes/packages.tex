@@ -33,6 +33,9 @@
 \usepackage{listings}       % 代码列表
 \usepackage{makeidx}        % 索引支持
 \usepackage{bookmark}       % PDF书签增强
+\usepackage{parallel}
+\usepackage{mdframed}
+\usepackage{paracol}
 
 % 章节设置
 \setcounter{secnumdepth}{-1}  % 设置章节编号深度为-1，关闭所有级别章节的编号显示
@@ -64,13 +67,44 @@
   \phantomsection          % 为新章节添加PDF书签锚点
 }
 
-% 定义代码高亮颜色
-\definecolor{shadecolor}{RGB}{248,248,248}
-\definecolor{commentcolor}{RGB}{128,128,128}
-\definecolor{keywordcolor}{RGB}{0,112,192}
-\definecolor{stringcolor}{RGB}{0,136,0}
-\definecolor{identifiercolor}{RGB}{0,0,0}
-\definecolor{numbercolor}{RGB}{128,0,128}
+% 定义左右布局环境
+\usepackage{paracol}
+\usepackage{mdframed}
+\usepackage{calc}
+
+% 设置列宽度
+\setlength{\columnsep}{20pt}
+
+% 定义文档和代码环境
+\newenvironment{docscode}{%
+    \begin{paracol}{2}
+    \setcolumnwidth{0.47\textwidth,0.53\textwidth}
+    \sloppy  % 防止文字溢出
+}{%
+    \end{paracol}
+}
+
+% 定义文档部分环境
+\newenvironment{docpart}{%
+    \colchunk{%
+    \begin{minipage}[t]{\columnwidth}
+}{%
+    \end{minipage}
+    }%
+}
+
+% 定义代码部分环境
+\newenvironment{codepart}{%
+    \colchunk{%
+    \begin{minipage}[t]{\columnwidth}
+}{%
+    \end{minipage}
+    }%
+}
+
+% 定义代码块样式
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeframe}{RGB}{230,230,230}
 
 % 设置代码块
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
@@ -78,52 +112,62 @@
     breaklines=true,
     breakanywhere=true,
     fontsize=\small,
-    frame=single,
-    rulecolor=\color{black!30},
-    framesep=3pt,
+    frame=none,
     baselinestretch=1.2,
-    xleftmargin=0.5em,
-    xrightmargin=0.5em,
     formatcom={\normalfont\ttfamily}
 }
 
-% 定义代码块背景
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\newenvironment{Shaded}{}{}
+% 定义代码块背景和边框样式
+\mdfdefinestyle{codestyle}{
+    backgroundcolor=codebg,
+    linewidth=0.5pt,
+    linecolor=codeframe,
+    topline=true,
+    bottomline=true,
+    leftline=true,
+    rightline=true,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt,
+    skipabove=0.5em,
+    skipbelow=0.5em
+}
 
-% 定义所有必要的代码高亮 token
+\newenvironment{Shaded}{%
+    \begin{mdframed}[style=codestyle]
+}{%
+    \end{mdframed}
+}
+
+% 调整页面布局
+\geometry{
+    a4paper,
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=14pt,
+    footskip=1cm,
+    marginparwidth=0pt,
+    marginparsep=0pt,
+    includeheadfoot
+}
+
+% 定义代码高亮颜色
+\definecolor{commentcolor}{RGB}{106,153,85}
+\definecolor{keywordcolor}{RGB}{175,0,219}
+\definecolor{stringcolor}{RGB}{206,145,120}
+\definecolor{identifiercolor}{RGB}{0,0,0}
+\definecolor{numbercolor}{RGB}{181,206,168}
+
+% 定义代码高亮 token
 \newcommand{\KeywordTok}[1]{\textcolor{keywordcolor}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor{numbercolor}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor{numbercolor}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor{numbercolor}{#1}}
-\newcommand{\CharTok}[1]{\textcolor{stringcolor}{#1}}
 \newcommand{\StringTok}[1]{\textcolor{stringcolor}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor{identifiercolor}{#1}}
-\newcommand{\AlertTok}[1]{\textcolor{red}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor{identifiercolor}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\ErrorTok}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\NumberTok}[1]{\textcolor{numbercolor}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor{black}{#1}}
 \newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor{identifiercolor}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textbf{#1}}
-\newcommand{\ConstantTok}[1]{\textcolor{numbercolor}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor{stringcolor}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor{stringcolor}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor{stringcolor}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
-\newcommand{\AnnotationTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor{commentcolor}{\textit{#1}}}
-\newcommand{\AttributeTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\InformationTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor{red}{#1}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor{keywordcolor}{#1}}
-\newcommand{\SectionTok}[1]{\textbf{#1}}
 
 % 页面设置
 \geometry{
@@ -223,4 +267,40 @@
     bookmarksnumbered=false,
     bookmarksopen=true,
     pdfstartview=FitH
+}
+
+% 定义 Go 语言关键字和内置函数
+\lstdefinelanguage{go}{
+    keywords={break,default,func,interface,select,case,defer,go,map,struct,
+              chan,else,goto,package,switch,const,fallthrough,if,range,type,
+              continue,for,import,return,var},
+    keywordstyle=\color{keywordcolor}\bfseries,
+    ndkeywords={append,cap,close,complex,copy,delete,imag,len,make,new,panic,
+                print,println,real,recover},
+    ndkeywordstyle=\color{keywordcolor},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    morestring=[b]',
+    morestring=[b]`,
+}
+
+% 设置默认代码样式为 Go
+\lstset{
+    language=go,
+    basicstyle=\small\ttfamily,
+    backgroundcolor=\color{codebg},
+    breaklines=true,
+    frame=none,
+    numbers=none,
+    keywordstyle=\color{keywordcolor}\bfseries,
+    commentstyle=\color{commentcolor}\itshape,
+    stringstyle=\color{stringcolor},
+    showstringspaces=false,
+    keepspaces=true,
+    columns=flexible,
+    upquote=true,
+    fontadjust=true,
+    basewidth={0.5em,0.45em}
 }

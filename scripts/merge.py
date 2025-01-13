@@ -82,10 +82,67 @@ def merge_html_files(input_dir: str, output_file: str):
     
     # 定义 CSS 样式
     css_styles = """
-        body { max-width: 800px; margin: 0 auto; padding: 20px; }
-        img { max-width: 100%; height: auto; }
-        pre { white-space: pre-wrap; }
-        code { background: #f5f5f5; padding: 2px 5px; }
+        body {
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            line-height: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chapter {
+            margin-bottom: 60px;
+        }
+        .example {
+            width: 100%;
+            display: table;
+            margin-bottom: 20px;
+        }
+        .example-row {
+            display: table-row;
+        }
+        .docs {
+            display: table-cell;
+            width: 420px;
+            max-width: 420px;
+            min-width: 420px;
+            min-height: 5px;
+            vertical-align: top;
+            text-align: left;
+            padding-right: 20px;
+        }
+        .code {
+            display: table-cell;
+            width: 480px;
+            max-width: 480px;
+            min-width: 480px;
+            background: #f8f8f8;
+            vertical-align: top;
+            padding: 5px;
+        }
+        pre {
+            margin: 0;
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 14px;
+            line-height: 18px;
+            white-space: pre-wrap;
+        }
+        code {
+            font-family: 'SF Mono', Menlo, monospace;
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        h2 {
+            font-size: 32px;
+            line-height: 40px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     """
     
     # 创建新的文档结构
@@ -178,10 +235,8 @@ def merge_html_files(input_dir: str, output_file: str):
             with open(chapter_path, "r", encoding="utf-8") as f:
                 chapter_soup = BeautifulSoup(f.read(), "html.parser")
                 
-                # 获取主要内容
                 content = chapter_soup.find("div", class_="example")
                 if content:
-                    # 创建新的章节容器
                     chapter_div = BeautifulSoup(f'<div class="chapter" id="{chapter}"></div>', "html.parser")
                     
                     # 添加标题
@@ -189,15 +244,21 @@ def merge_html_files(input_dir: str, output_file: str):
                     if title:
                         chapter_div.div.append(title)
                     
-                    # 处理文档和代码
+                    # 处理表格内容
                     for table in content.find_all("table"):
+                        example_div = BeautifulSoup('<div class="example"></div>', "html.parser")
+                        
                         for row in table.find_all("tr"):
-                            # 获取文档说明
-                            doc = row.find("td", class_="docs")
-                            if doc and doc.get_text().strip():
-                                chapter_div.div.append(doc)
+                            row_div = BeautifulSoup('<div class="example-row"></div>', "html.parser")
                             
-                            # 获取代码
+                            # 处理文档部分
+                            docs = row.find("td", class_="docs")
+                            if docs and docs.get_text().strip():
+                                docs_div = BeautifulSoup('<div class="docs"></div>', "html.parser")
+                                docs_div.div.append(docs)
+                                row_div.div.append(docs_div)
+                            
+                            # 处理代码部分
                             code = row.find("td", class_="code")
                             if code:
                                 # 移除运行和复制按钮
@@ -205,8 +266,27 @@ def merge_html_files(input_dir: str, output_file: str):
                                     img.decompose()
                                 for a in code.find_all("a"):
                                     a.decompose()
+                                    
                                 if code.get_text().strip():
-                                    chapter_div.div.append(code)
+                                    code_div = BeautifulSoup('<div class="code"></div>', "html.parser")
+                                    # 找到 pre 标签
+                                    pre = code.find("pre")
+                                    if pre:
+                                        # 添加 Go 语言标记
+                                        pre['class'] = pre.get('class', []) + ['language-go']
+                                        # 确保代码在 code 标签内
+                                        if not pre.find('code'):
+                                            code_content = pre.string or ''
+                                            pre.string = ''
+                                            code_tag = BeautifulSoup(f'<code class="language-go">{code_content}</code>', 'html.parser')
+                                            pre.append(code_tag)
+                                    code_div.div.append(code)
+                                    row_div.div.append(code_div)
+                            
+                            if row_div.div.contents:
+                                example_div.div.append(row_div)
+                        
+                        chapter_div.div.append(example_div)
                     
                     # 处理图片
                     for img in chapter_div.find_all("img"):
