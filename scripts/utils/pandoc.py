@@ -27,7 +27,7 @@ class PandocConverter:
             
             # 从配置获取元数据
             authors = self.config.get("metadata", {}).get("authors", [])
-            author_prefix = self.config.get("metadata", {}).get("author_prefix", "译者:")
+            author_prefix = self.config.get("metadata", {}).get("author_prefix", "作者:")
             author_text = f"{author_prefix} {', '.join(authors)}"
             metadata = self.config.get("metadata", {})
             

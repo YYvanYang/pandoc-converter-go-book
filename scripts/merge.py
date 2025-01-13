@@ -78,8 +78,7 @@ def merge_html_files(input_dir: str, output_file: str):
     # 从配置获取元数据
     metadata = config.get("metadata", {})
     authors = metadata.get("authors", [])
-    author_prefix = metadata.get("author_prefix", "译者:")
-    author_text = f"{author_prefix} {', '.join(authors)}"
+    author_text = f"by {', '.join(authors)}"
     
     # 定义 CSS 样式
     css_styles = """
@@ -92,13 +91,13 @@ def merge_html_files(input_dir: str, output_file: str):
     # 创建新的文档结构
     html_template = f"""
     <!DOCTYPE html>
-    <html lang="{metadata.get('language', 'zh-CN')}">
+    <html lang="{metadata.get('language', 'en')}">
     <head>
         <meta charset="UTF-8">
         <meta name="author" content="{author_text}">
         <meta name="dc.creator" content="{author_text}">
         <meta name="dc.title" content="{metadata.get('title', '')}">
-        <meta name="dc.language" content="{metadata.get('language', 'zh-CN')}">
+        <meta name="dc.language" content="{metadata.get('language', 'en')}">
         <meta name="dc.rights" content="{metadata.get('rights', '')}">
         <title>{metadata.get('title', '')}</title>
         <style>
@@ -122,20 +121,54 @@ def merge_html_files(input_dir: str, output_file: str):
         main_soup = BeautifulSoup(f.read(), "html.parser")
     
     # 获取导航栏中的章节链接
-    nav = main_soup.find("nav", class_="sidebar")
+    nav = main_soup.find("div", id="intro")
     if not nav:
         raise ValueError("无法找到导航栏")
     
     # 收集所有章节链接
     chapters = []
-    for link in nav.find_all("a"):
+    chapter_list = nav.find("ul")
+    if not chapter_list:
+        raise ValueError("无法找到章节列表")
+    
+    print(f"找到章节列表，开始处理链接...")
+    
+    for link in chapter_list.find_all("a"):
         href = link.get("href")
         if href:
-            href = unquote(href.replace("./", ""))
-            chapters.append(href)
+            print(f"处理链接: {href}")
+            # 每个章节是一个独立的文件
+            chapter_file = input_path / href
+            print(f"检查文件: {chapter_file}")
+            if chapter_file.exists():
+                print(f"文件存在，添加章节: {href}")
+                chapters.append(href)
+            else:
+                print(f"文件不存在: {chapter_file}")
+    
+    if not chapters:
+        raise ValueError("未找到任何章节链接，请检查文件是否存在")
     
     # 创建新的内容容器
     merged_content = []
+    
+    # 首先处理首页内容
+    intro_content = main_soup.find("div", id="intro")
+    if intro_content:
+        # 移除章节列表，因为我们会在后面重新组织内容
+        chapter_list = intro_content.find("ul")
+        if chapter_list:
+            chapter_list.decompose()
+        
+        # 移除页脚
+        footer = intro_content.find("p", class_="footer")
+        if footer:
+            footer.decompose()
+        
+        # 创建首页容器
+        intro_div = BeautifulSoup('<div class="chapter" id="introduction"></div>', "html.parser")
+        intro_div.div.append(intro_content)
+        merged_content.append(str(intro_div))
     
     # 合并所有文件
     for chapter in chapters:
@@ -146,32 +179,47 @@ def merge_html_files(input_dir: str, output_file: str):
                 chapter_soup = BeautifulSoup(f.read(), "html.parser")
                 
                 # 获取主要内容
-                content = chapter_soup.find("div", id="content")
-                if not content:
-                    content = chapter_soup.find("main")
-                if not content:
-                    content = chapter_soup.find("div", class_="content")
-                
+                content = chapter_soup.find("div", class_="example")
                 if content:
-                    # 移除导航栏和不需要的元素
-                    for nav in content.find_all("nav"):
-                        nav.decompose()
-                    for sidebar in content.find_all("div", class_="sidebar"):
-                        sidebar.decompose()
+                    # 创建新的章节容器
+                    chapter_div = BeautifulSoup(f'<div class="chapter" id="{chapter}"></div>', "html.parser")
+                    
+                    # 添加标题
+                    title = content.find("h2")
+                    if title:
+                        chapter_div.div.append(title)
+                    
+                    # 处理文档和代码
+                    for table in content.find_all("table"):
+                        for row in table.find_all("tr"):
+                            # 获取文档说明
+                            doc = row.find("td", class_="docs")
+                            if doc and doc.get_text().strip():
+                                chapter_div.div.append(doc)
+                            
+                            # 获取代码
+                            code = row.find("td", class_="code")
+                            if code:
+                                # 移除运行和复制按钮
+                                for img in code.find_all("img"):
+                                    img.decompose()
+                                for a in code.find_all("a"):
+                                    a.decompose()
+                                if code.get_text().strip():
+                                    chapter_div.div.append(code)
                     
                     # 处理图片
-                    for img in content.find_all("img"):
+                    for img in chapter_div.find_all("img"):
                         src = img.get("src")
                         if src:
                             new_src = fix_image_path(src, input_path, images_dir)
                             if new_src:
                                 img["src"] = new_src
                             else:
-                                # 如果找不到图片，移除图片标签
                                 print(f"警告: 找不到图片 {src}，移除此图片")
                                 img.decompose()
                     
-                    merged_content.append(str(content))
+                    merged_content.append(str(chapter_div))
                 else:
                     print(f"警告: 在 {chapter} 中未找到内容")
         else:

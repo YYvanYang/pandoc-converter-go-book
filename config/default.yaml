@@ -1,17 +1,14 @@
 ---
 # 文档元数据
 metadata:
-  title: "Go语言圣经"
+  title: "Go by Example"
   authors:
-    - "chai2010"
-    - "Xargin" 
-    - "CrazySssst"
-    - "foreversmart"
-  author_prefix: "译者:"
-  language: "zh-CN"
+    - "Mark McGranaghan"
+    - "Eli Bendersky"
+  language: "en"
   rights: "CC BY-NC-SA 4.0"
-  keywords: "Go,Golang,编程"
-  subject: "Go语言编程指南"
+  keywords: "Go,Golang,Programming,Go by Example"
+  subject: "Go Programming Guide"
   creator: "LaTeX with hyperref"
   producer: "xelatex"
 
@@ -27,7 +24,7 @@ pdf:
 # 目录设置
 toc:
   depth: 3
-  title: "目录"
+  title: "Contents"
 
 # 页面设置
 page:
@@ -40,9 +37,9 @@ page:
 
 # 字体设置
 fonts:
-  main: SimSun
-  sans: SimHei
-  mono: SimFang
+  main: "Times New Roman"
+  sans: Arial
+  mono: "SF Mono"
   size: 12pt
   
 # 处理设置
